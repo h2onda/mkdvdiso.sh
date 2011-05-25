@@ -22,6 +22,15 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
+IMPLANTISOMD5="/usr/lib/anaconda-runtime/implantisomd5"
+if [ ! -x ${IMPLANTISOMD5} ]; then
+	IMPLANTISOMD5=`which implantisomd5 2> /dev/null`
+fi
+if [ -z ${IMPLANTISOMD5} ]; then
+	echo "please install isomd5sum or anaconda-runtime !" > /dev/stderr
+	exit 1
+fi
+
 cleanup() {
 [ ${LOOP:=/tmp/loop} = "/" ] && echo "LOOP mount point = \/, dying!" && exit
 [ -d $LOOP ] && rm -rf $LOOP 
@@ -65,7 +74,7 @@ find $DVD -name TRANS.TBL | xargs rm -f
 
 cd $DVD
 mkisofs -J -R -v -T -o $2 -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table .
-/usr/lib/anaconda-runtime/implantisomd5 --force $2
+${IMPLANTISOMD5} --force $2
 
 cleanup
 echo ""
