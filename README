@@ -1,0 +1,9 @@
+mkdvdiso.sh is script which is to create bootable DVD iso of a Red Hat Linux Distribution. Original version's author is Chris Kloiber <ckloiber@redhat.com>. 
+
+I'll change the script to add few functions.
+
+ - Support recent distributions (Find implantisomd5 path)
+ - To create Source DVD (non-bootable)
+ - check iso md5sum
+
+GPL version 2 applies. No warranties.
