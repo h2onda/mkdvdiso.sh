@@ -3,10 +3,11 @@
 # Original version is written by Chris Kloiber <ckloiber@redhat.com>
 # This fork version is modified by HONDA Hirofumi <h2onda@gmail.com>
 
-# A quick hack that will create a bootable DVD iso of a Red Hat Linux
-# Distribution. Feed it either a directory containing the downloaded
-# iso files of a distribution, or point it at a directory containing
-# the "RedHat", "isolinux", and "images" directories.
+# A quick hack that will create a bootable DVD iso or non-bootable
+# source DVD iso of a Red Hat Linux Distribution. Feed it either a
+# directory containing the downloaded iso files of a distribution,
+# or point it at a directory containing the "RedHat", "isolinux",
+# and "images" directories.
 
 # This version only works with "isolinux" based Red Hat Linux versions.
 
