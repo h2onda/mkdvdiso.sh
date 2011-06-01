@@ -89,11 +89,15 @@ else
 	[ -e $1/.discinfo ] && cp -av $1/.discinfo $DVD
 fi
 
-rm -rf $DVD/isolinux/boot.cat
+BOOTISO_OPTS=""
+if [ -f $DVD/isolinux/boot.cat ];then
+	rm -rf $DVD/isolinux/boot.cat
+	BOOTISO_OPTS="-b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table"
+fi
 find $DVD -name TRANS.TBL | xargs rm -f
 
 cd $DVD
-mkisofs -J -R -v -T -o $2 -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table .
+mkisofs -J -R -v -T -o $2 $BOOTISO_OPTS .
 ${IMPLANTISOMD5} --force $2
 
 cleanup
