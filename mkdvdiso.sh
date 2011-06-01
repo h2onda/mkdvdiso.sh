@@ -32,6 +32,15 @@ if [ -z ${IMPLANTISOMD5} ]; then
 	exit 1
 fi
 
+CHECKISOMD5="/usr/lib/anaconda-runtime/checkisomd5"
+if [ ! -x ${CHECKISOMD5} ]; then
+	CHECKISOMD5=`which checkisomd5 2> /dev/null`
+fi
+if [ -z ${CHECKISOMD5} ]; then
+	echo "please install isomd5sum or anaconda-runtime !" > /dev/stderr
+	exit 1
+fi
+
 cleanup() {
 [ ${LOOP:=/tmp/loop} = "/" ] && echo "LOOP mount point = \/, dying!" && exit
 [ -d $LOOP ] && rm -rf $LOOP 
@@ -47,6 +56,16 @@ if [ !`ls $1/*.iso 2>&1>/dev/null ; echo $?` ]; then
 	echo "Found ISO CD images..."
 	CDS=`expr 0`
 	DISKS="1"
+	ISOFILES=`ls $1/*.iso`
+
+	for f in ${ISOFILES}; do
+		echo "checking `basename $f` ..."
+		${CHECKISOMD5} $f 2>&1 > /dev/null 
+		if [ $? -ne 0 ]; then
+			exit 1
+		fi
+		echo
+	done
 
 	for f in `ls $1/*.iso`; do
 		mount -o loop $f $LOOP
